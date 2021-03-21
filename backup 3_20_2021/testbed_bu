@@ -1,0 +1,42 @@
+
+import ChessEngine 
+
+WIDTH = HEIGHT = 1024
+DIMENSION = 8
+SQ_SIZE = HEIGHT // DIMENSION
+pos = (300, 200)
+pos_x = []
+pos_y = []
+# link = []
+
+columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
+rows = [1, 2 , 3, 4, 5, 6, 7, 8]
+col = []
+row = []
+square = []
+gs = ChessEngine.GameState()
+
+
+
+for r in range(DIMENSION):
+	pos_x.append([r*SQ_SIZE, r*SQ_SIZE + SQ_SIZE])
+	pos_y.append([r*SQ_SIZE, r*SQ_SIZE + SQ_SIZE])
+# print(pos_x)
+# print(pos_y)
+
+for r in range(DIMENSION):
+	if pos_x[r][0] <= pos[0] <= pos_x[r][1]: 
+		# print(pos_x[r])
+		# print(r)
+		# print(pos)
+		square.append(columns[r])
+	if pos_y[r][0] <= pos[1] <= pos_y[r][1]:
+		# print(pos_y[r])
+		# print(r)
+		# print(pos)
+		square.append(str(rows[r]))
+		
+x = square[0]
+y = square[1]
+z = y+x
+print(z)
