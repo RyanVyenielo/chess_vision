@@ -19,6 +19,7 @@ gs = ChessEngine.GameState()
 row_name = rand.randint(0,7)
 column_name = rand.randint(0,7)
 name = gs.names[column_name][row_name]
+print(type(name))
 name_list = []
 name_list.append(name)
 # print(name_list)
@@ -63,8 +64,10 @@ def loadImages():
 
 
 def drawGameState(screen, gs, name):
+	screen.fill(p.Color("black")) # erases the entire screen surface
 	drawBoard(screen)
-	blink_square(name, black)
+	blink_square(name, 128, black, WIDTH, HEIGHT, SQ_SIZE)
+	blink_square(total, 40, white, 2250, 100, 0)
 	# drawPieces(screen, gs.board)
 
 def drawBoard(screen):
@@ -76,14 +79,14 @@ def drawBoard(screen):
 
 
 # The purpose of this funciton is to display the square text in the middle of the screen
-def blink_square(name, color):
-	screen_text = font.render(name, True, color)
-	screen.blit(screen_text,[ WIDTH/2 - SQ_SIZE/2, HEIGHT/2 - SQ_SIZE/2])
+def blink_square(text, TEXT_SIZE, color, x, y, size):
+	font = p.font.SysFont(None, TEXT_SIZE)
+	screen_text = font.render(text, True, color)
+	screen.blit(screen_text,[ x/2 - size/2, y/2 - size/2])
 
 
 
 #This function's purpose is highlight a square when you click on it and show the name of the square
-
 def drawPieces(screen, board):
 	for r  in range(DIMENSION):
 		for c in range(DIMENSION):
@@ -104,18 +107,20 @@ num_clicks = 0
 p.init()
 font = p.font.SysFont(None, TEXT_SIZE)
 p.display.set_caption("Vision Practice")
-screen = p.display.set_mode((WIDTH, HEIGHT))
+screen = p.display.set_mode((1500, HEIGHT))
 clock = p.time.Clock()
-screen.fill(p.Color("white"))
+screen.fill(p.Color("black"))
 
 # Create Sounds
 suck_sound = p.mixer.Sound("yousuck_deep.wav")
+# vapor_music = p.mixer.music.load("music.mp3")
+# p.mixer.music.play(-1)
 
 # Load Images
 loadImages()
 running = True
 while running:
-	print('LOL')
+	# print('LOL')
 	for e in p.event.get():
 		
 		if e.type == p.QUIT:
@@ -129,7 +134,8 @@ while running:
 			pos = p.mouse.get_pos()
 			n = 1
 			nd = 1
-			num_clicks = num_clicks + 1
+			if pos[0] < WIDTH and pos[1] < HEIGHT:
+				num_clicks = num_clicks + 1
 			print(num_clicks)
 			print("pos:")
 			print(pos)
@@ -159,16 +165,19 @@ while running:
 			if z == name_list[num_clicks - 1]:
 				print("Correct")
 				right = right + 1
+
 				
 			else:
 				print("incorrect")
-				suck_sound.play()
-
+				# suck_sound.play()
+			
 			print("x:" + str(x))
 			print("y:" + str(y))
 			print("z:" + str(z))
 			print("name:" + str(name_list[num_clicks - 1]))
-			print("Total Right:" + str(right) + "/" + str(squares_so_far))
+			total = "Total Right:" + str(right) + "/" + str(squares_so_far)
+			p.display.update()
+			print(total)
 			print(square)
 		
 	drawGameState(screen, gs, name)
